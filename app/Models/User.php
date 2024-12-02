@@ -17,10 +17,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    const ROLES = ['admin', 'member', 'caregiver', 'partner','volunteer'];
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role'
     ];
 
     /**

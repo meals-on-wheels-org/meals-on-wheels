@@ -1,6 +1,10 @@
 <?php
 
+use App\Http\Controllers\CareGiverController;
+use App\Http\Controllers\MemberController;
+use App\Http\Controllers\PartnerController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\VolunteerController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,6 +17,20 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+// Route::resource('member',MemberController::class);
+// Route::resource('careGiver',CareGiverController::class);
+// Route::resource('partner',PartnerController::class);
+// Route::resource('volunteer',VolunteerController::class);
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/member/form', [MemberController::class, 'create'])->name('member.form');
+    Route::post('/member/form', [MemberController::class, 'store'])->name('member.store');
+
+    Route::get('/caregiver/form', [CareGiverController::class, 'create'])->name('caregiver.form');
+    Route::post('/caregiver/form', [CareGiverController::class, 'store'])->name('caregiver.store');
+});
+
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');

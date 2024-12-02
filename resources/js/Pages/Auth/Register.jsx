@@ -4,6 +4,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useState } from 'react';
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -11,13 +12,32 @@ export default function Register() {
         email: '',
         password: '',
         password_confirmation: '',
+        role:'',
     });
 
-    const submit = (e) => {
-        e.preventDefault();
+    // const handleRegister = (role) => {
+    //     setData("role", role);
+    //     post(route("register"), {
+    //         onSuccess: () => {
+    //             Inertia.visit(route(`${role}.form`)); // Redirect to role-specific form
+    //         },
+    //     });
+    // };
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const handleRoleSelection = (role) => {
+        // Set the selected role
+        setData("role", role);
 
-        post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+        // Submit the basic registration form
+        setIsSubmitting(true);
+        post(route("register"), {
+            onSuccess: () => {
+                // Redirect to the role-specific form after successful registration
+                inertia.visit(route(`${role}.form`));
+            },
+            onError: () => {
+                setIsSubmitting(false); // Allow re-submission if there's an error
+            },
         });
     };
 
@@ -25,7 +45,7 @@ export default function Register() {
         <GuestLayout>
             <Head title="Register" />
 
-            <form onSubmit={submit}>
+            <form>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 
@@ -101,18 +121,23 @@ export default function Register() {
                         className="mt-2"
                     />
                 </div>
-
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
-                        Already registered?
-                    </Link>
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Register
-                    </PrimaryButton>
+                <div>
+                    <button type="button" onClick={() => handleRoleSelection("member")} 
+                        disabled={isSubmitting}>
+                        Register as Member
+                    </button>
+                    <button type="button" onClick={() => handleRoleSelection("caregiver")} 
+                        disabled={isSubmitting}>
+                        Register as CareGiver
+                    </button>
+                    <button type="button" onClick={() => handleRoleSelection("partner")} 
+                        disabled={isSubmitting}>
+                        Register as Partner
+                    </button>
+                    <button type="button" onClick={() => handleRoleSelection("volunteer")} 
+                        disabled={isSubmitting}>
+                        Register as Volunteer
+                    </button>
                 </div>
             </form>
         </GuestLayout>
