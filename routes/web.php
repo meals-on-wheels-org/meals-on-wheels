@@ -14,9 +14,30 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/', function () {
+    return Inertia::render('Homepage');
+})->name('homepage');
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::get('/about-us', function () {
+    return Inertia::render('AboutUs');
+})->name('about-us');
+
+Route::get('/donate', function () {
+    return Inertia::render('FundraisingCampaigns');
+})->name('donate');
+
+Route::get('/volunteer', function () {
+    return Inertia::render('Volunteer');
+})->name('volunteer');
+
+Route::get('/register-volunteer', function () {
+    return Inertia::render('RegisterVolunteer');
+})->name('register-volunteer');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
