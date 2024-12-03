@@ -15,29 +15,31 @@ Route::get('/', function () {
     ]);
 });
 
+Route::middleware(['auth'])->group(function () {
 Route::get('/', function () {
     return Inertia::render('Homepage');
-})->middleware(['auth', 'verified'])->name('homepage');
+});
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+});
 
 Route::get('/about-us', function () {
     return Inertia::render('AboutUs');
-})->middleware(['auth', 'verified'])->name('aboutus');
+});
 
 Route::get('/donate', function () {
     return Inertia::render('FundraisingCampaigns');
-})->middleware(['auth', 'verified'])->name('donate');
+});
 
 Route::get('/volunteer', function () {
     return Inertia::render('Volunteer');
-})->middleware(['auth', 'verified'])->name('volunteer');
+});
 
 Route::get('/register-volunteer', function () {
     return Inertia::render('RegisterVolunteer');
-})->middleware(['auth', 'verified'])->name('register-volunteer');
+});
+});
 
 //Dash
 Route::middleware(['auth'])->group(function () {
